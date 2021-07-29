@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voithos helper</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <link rel="stylesheet" type="text/css" href="static/index.css" />
+  </head>
+ <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position:fixed;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
+  <body>
+    <ul>
+    <li>
+    <a href="/">Home</a></li>
+    <li><a class="active" href="/dashboard">Guilds</a></li>
+    <li><a href="/logout">Logout</a></li>
+    </ul>
+    <div class="card">
+    <a href="logout">
+    <img src="{{user.avatar_url}}">
+    </a>
+    </div>
+    <div class="picker">
+      <h3><p align="center" style="font-family:'Courier New'"><b>Please select a server to get started</b></p></h3>
+      <br>
+      <hr />
+      <br>
+      <section class="cards">
+        {% for guild in guilds %}
+        <div class="card">
+          <a href="/dashboard/{{guild.id}}">
+            {% if guild.icon_url is not none %}
+            <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
+            {% else %}
+              <img
+                src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
+                class="{{guild.class_color}}"
+              />
+            {% endif %}
+          </a>
+          <br />
+          <p align="center" style="font-family:'Courier New'">
+          {{ guild.name }}
+          </p>
+        </div>
+        {% endfor %}
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<script language="javascript" type="text/javascript">
+    function buttonClick(){
+    var url = document.getElementById("inputURL").value;
+    window.location = "https://TestBOT.thejavaprogramm.repl.co/changeprefix/{{guild.id}}/"+url;
+    }
+</script>
+  <head>
+    <title>Voithos helper</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <link rel="stylesheet" type="text/css" href="static/index.css" />
+    <style>
+    button {
+      background-color: #4caf50; /* Green */
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+    button:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+  </style>
+  </head>
+  <body>
+    <div class="card">
+          <img src="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128" class="logo">
+    </div>
+    <h1>Voithos helper dashboard!</h1>
+
+      <h3>Hello, {{username}}! You are on {{guild}} settings.</h3>
+      <hr />
+      <div class="picker">
+      <section class="cards">
+        <div class="card">
+          <a href="/dashboard/{{guild.id}}">
+            {% if guild.icon_url is not none %}
+            <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
+            {% else %}
+            <img
+              src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
+              class="{{guild.class_color}}"
+            />
+            {% endif %}
+          </a>
+          <br />
+          <h3>Your {{guild.name}} prefix is {{prefix}} .</h3>
+
+        </div>
+<input type="text" id="inputURL" name="inputURL" value="{{prefix}}"><br>
+<input type="button" value="Change prefix" OnClick="buttonClick()"/>
+</div>
+</body>
+</html>

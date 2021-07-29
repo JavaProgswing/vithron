@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voithos helper</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
+  </head>
+<script language="javascript" type="text/javascript">
+    function buttonClick(){
+    var url = document.getElementById("inputURL").value;
+    window.location = "https://TestBOT.thejavaprogramm.repl.co/changeprefix/{{guild.id}}/"+url;
+    }
+</script>
+  <style>
+    
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
+  <body>
+    <ul>
+    <li>
+    <a href="/">Home</a></li>
+    <li><a href="/dashboard">Guilds</a></li>
+    <li><a class="active" href="/dashboard/{{guild.id}}">{{guild.name}}</a></li>
+    <li><a class="active" href="/dashboard/{{guild.id}}/prefixes">Prefix menu</a></li> 
+    <li><a href="/logout">Logout</a></li>
+    </ul>
+
+    <p align="center" style="font-family:'Courier New'">
+      
+    <b>{{ guild.name }}</b>
+    </p>
+        <div class="card">
+            <a href="https://TestBOT.thejavaprogramm.repl.co/dashboard">
+            {% if guild.icon_url is not none %}
+            <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
+            {% else %}
+            <img
+              src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
+              class="{{guild.class_color}}"
+            />
+            {% endif %}
+            </a>
+          <br>
+        </div>
+        <hr>
+        <label for="cprefix" style="font-family:'Courier New'">The {{guild.name}} current prefix is {{prefix}} </label>
+        <br>
+        <br>
+        <label for="iprefix" style="font-family:'Courier New'">State a prefix : </label>
+        <input type="text" id="inputURL" name="inputURL" value="New Prefix"><br>
+        <br>
+        <input type="button" value=" Change prefix " OnClick="buttonClick()" style="font-family:'Courier New'"/>
+  </body>
+</html>

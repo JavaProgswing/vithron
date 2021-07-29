@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voithos helper</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
+  </head>
+      <script>
+         setTimeout(function(){
+            window.location.href = '{{url}}';
+         }, 5000);
+      </script>
+  <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
+  <body>
+    <ul>
+    <li>
+    <a href="/">Home</a></li>
+    <li><a href="/logout">Logout</a></li>
+    </ul>
+    <hr>
+    <br>
+    <p align="center" style="font-family:'Courier New'">
+    <b>{{ errordata }}</b>
+    </p>
+  </body>
+</html>

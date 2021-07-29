@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voithos helper</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <link rel="stylesheet" type="text/css" href="static/index.css?version=21" />
+    <style>
+      button {
+        background-color: #4caf50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+      button:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+      }
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+        position:fixed;
+      }
+
+      li {
+        float: left;
+      }
+
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+
+      li a:hover:not(.active) {
+        background-color: #111;
+      }
+
+      .active {
+        background-color: #04AA6D;
+      }
+    </style>
+  </head>
+  <body>
+    <ul>
+      {% if not authorized %}
+      <li><a class="active" href="/login">Login with discord</a></li>
+      {% else %}
+      <li><a class="active" href="/dashboard">Open Dashboard</a></li>
+      <li><a href="/logout">Logout discord</a></li>
+      {%endif %}
+    </ul>
+    <br>
+    <h2>
+      <div class="card"><img src="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128" alt="ICON" ></div><div class="blurcard">Why Voithos helper?</div></h2>
+    <br>
+    <div class="blurcard">
+    <p align="center">
+    A fully customizable and modular discord bot featuring reaction roles, automod, logging, custom commands and much more.
+    </p>
+    </div>
+    <div class="card">
+    <a href="https://top.gg/bot/805030662183845919">
+    <img src="https://top.gg/api/widget/status/805030662183845919.svg?noavatar=true" alt="Online" /></a>
+    </div>
+    <section class="cards">
+    <hr>
+    <div class="fillcard">
+    <h2> Anti-raid🚨 Protection</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    Can handle a server raid and don't worry it can create backups!
+    </p>
+    </div>
+    <hr>
+    <div class="fillcard">
+    <h2>Auto Moderation🔨</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    It automatically punishes users trying to circumvent rules.
+    </p>
+    </div>
+    <hr>
+    <div class="fillcard">
+    <h2>Custom✍️ commands</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    It helps you to further customize your server with commands you need!
+    </p>
+    </div>
+    <hr>
+    <div class="fillcard">
+    <h2>Fun🤩 commands</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    It helps and lets you have fun using its exclusive commands!
+    </p>
+    </div>
+    <hr>
+    <div class="fillcard">
+    <h2>Music🎵 commands</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    Listen to the finest music brought to you by youtube.
+    </p>
+    </div>
+    <hr>
+    <div class="fillcard">
+    <h2>Ticket panel🎫 commands</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    Setup a custom support ticket system on your server!
+    </p>
+    </div>
+    <hr>
+    <div class="fillcard">
+    <h2>Logging📖 commands</h2>
+    <p align="center" style="font-family:'Helvetica'">
+    <br>
+    Log every action being taken on your server by a single command!
+    </p>
+    </div>
+    <hr>
+    </section>
+  </body>
+</html>

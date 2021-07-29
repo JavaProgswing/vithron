@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Voithos helper</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
+  </head>
+<script language="javascript" type="text/javascript">
+
+</script>
+  <style>
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+  position: center;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+</style>
+  <body>
+    <ul>
+    <li>
+    <a href="/">Home</a></li>
+    <li><a href="/dashboard">Guilds</a></li>
+    <li><a class="active" href="/dashboard/{{guild.id}}">{{guild.name}}</a></li>
+    <li><a class="active" href="/dashboard/{{guild.id}}/commands">Commands menu</a></li> 
+    <li><a href="/logout">Logout</a></li>
+    </ul>
+
+    <p align="center" style="font-family:'Courier New'">
+      
+    <b>{{ guild.name }}</b>
+    </p>
+        <div class="card">
+            <a href="https://TestBOT.thejavaprogramm.repl.co/dashboard">
+            {% if guild.icon_url is not none %}
+            <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
+            {% else %}
+            <img
+              src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
+              class="{{guild.class_color}}"
+            />
+            {% endif %}
+            </a>
+          <br>
+        </div>
+        <hr>
+
+        <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn" style="display: block; margin: 0 auto;">Click to reveal commands </button>
+  <div id="myDropdown" class="dropdown-content">
+    <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()" pattern="[A-Za-z]">
+    <a href="/dashboard/{{guild.id}}/music">Music</a>
+    <a href="/dashboard/{{guild.id}}/moderation">Moderation</a>
+  </div>
+</div>
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>
+  </body>
+</html>
