@@ -8,7 +8,7 @@
 <script language="javascript" type="text/javascript">
     function buttonClick(){
     var url = document.getElementById("inputURL").value;
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/changeprefix/{{guild.id}}/"+url;
+    window.location = "https://voithos.webdashboard.repl.co/changeprefix/{{guild.id}}/"+url;
     }
 </script>
   <style>
@@ -56,7 +56,7 @@ li a:hover:not(.active) {
     <b>{{ guild.name }}</b>
     </p>
         <div class="card">
-            <a href="https://TestBOT.thejavaprogramm.repl.co/dashboard">
+            <a href="https://voithos.webdashboard.repl.co/dashboard">
             {% if guild.icon_url is not none %}
             <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
             {% else %}

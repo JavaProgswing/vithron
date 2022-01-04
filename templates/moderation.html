@@ -22,32 +22,32 @@
     } else {
       textOne = timeprovided;
     }
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/mute/{{guild.id}}/"+member+"/"+reason+"?timenum="+textOne;
+    window.location = "https://voithos.webdashboard.repl.co/mute/{{guild.id}}/"+member+"/"+reason+"?timenum="+textOne;
     }
     function buttonClickOne(){
     var member = document.getElementById("inputURL").value;
 
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/unmute/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/unmute/{{guild.id}}/"+member;
     }
     function buttonClickTwo(){
     var member = document.getElementById("inputURL").value;
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/blacklist/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/blacklist/{{guild.id}}/"+member;
     }
     function buttonClickThree(){
     var member = document.getElementById("inputURL").value;
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/unblacklist/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/unblacklist/{{guild.id}}/"+member;
     }
     function buttonClickFour(){
     var member = document.getElementById("inputURL").value;
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/ban/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/ban/{{guild.id}}/"+member;
     }
     function buttonClickFive(){
     var member = document.getElementById("inputURL").value;
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/unban/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/unban/{{guild.id}}/"+member;
     }
     function buttonClickSix(){
     var member = document.getElementById("inputURL").value;
-    window.location = "https://TestBOT.thejavaprogramm.repl.co/kick/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/kick/{{guild.id}}/"+member;
     }
 </script>
   <style>
@@ -95,7 +95,7 @@ li a:hover:not(.active) {
     <b>{{ guild.name }}</b>
     </p>
         <div class="card">
-            <a href="https://TestBOT.thejavaprogramm.repl.co/dashboard">
+            <a href="https://voithos.webdashboard.repl.co/dashboard">
             {% if guild.icon_url is not none %}
             <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
             {% else %}
