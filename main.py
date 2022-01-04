@@ -1,6 +1,6 @@
 
 from quart import Quart, redirect, url_for,render_template,request
-from quart_discord import DiscordOAuth2Session, requires_authorization
+from quart_discord import DiscordOAuth2Session,requires_authorization, Unauthorized
 import aiohttp
 import string
 import os
@@ -37,6 +37,7 @@ app.config["DISCORD_CLIENT_SECRET"] = os.getenv("DISCORD_CLIENT_SECRET")
 app.config["DISCORD_BOT_TOKEN"] = os.getenv("DISCORD_BOT_TOKEN")
 app.config["DISCORD_REDIRECT_URI"] = "https://voithos.webdashboard.repl.co/callback"
 token=os.environ.get("DISCORD_BOT_TOKEN")
+dashtoken=os.environ.get("DASH_SECRET")
 discordo = DiscordOAuth2Session(app)
 dict_obj = my_dictionary()
 
@@ -64,6 +65,9 @@ async def internal_server_error(e):
 @app.errorhandler(403)
 async def page_forbidden(e):
     return await render_template("error.html",errordata= "Seems like the page you were missing access to the page you were looking for.",url="https://voithos.webdashboard.repl.co/dashboard")
+@app.errorhandler(Unauthorized)
+async def redirect_unauthorized(e):
+    return redirect(url_for("login"))
 @app.route("/info")
 async def info():
   return redirect(url_for("index"))
@@ -71,10 +75,10 @@ async def info():
 async def index():
       botAuth=request.args.get('validateAuth')
       if not botAuth==None:
-        if botAuth==token:
+        if botAuth==dashtoken:
           reqId=request.args.get('requestId')
           print(" Request id : "+str(reqId))
-          if not reqId=="Voithos":
+          if not reqId=="vithron":
             reqOutput=request.args.get('requestOut')
             dict_obj[reqId]=reqOutput
             if reqOutput==None:
@@ -88,7 +92,7 @@ async def index():
             reqError=request.args.get('requestErr')
             reqError=str(reqError).replace("+"," ")
             for key, value in dict_obj.items():
-              dict_obj[key]="voithosStart"
+              dict_obj[key]="vithronStart"
       
       return await render_template("index.html", authorized = await discordo.authorized)
 
@@ -154,7 +158,7 @@ await mute_member({guild_id},'{member}','{author}','{timenum}','{reason}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
@@ -187,7 +191,7 @@ print(prefix)
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   return await render_template("prefixes.html",guild=theGuild,prefix=str(dict_obj[randomisedStr]))
 @app.route("/login")
@@ -221,7 +225,7 @@ async def playsong(guild_id,songname,channelid):
   link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
   songname=songname.replace("%20"," ")
   getGuilds=f""" 
-  await dashplay({guild_id}, {user.id}, {channelid},{songname})
+  await dashplay({guild_id}, {user.id}, {channelid},'{songname}')
 """
   randomisedStr=genrandomstr(20)
   while randomisedStr in listOfAuth:
@@ -232,7 +236,7 @@ async def playsong(guild_id,songname,channelid):
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/music"
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
@@ -265,7 +269,7 @@ async def pausesong(guild_id,songname,channelid):
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/music"
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
@@ -287,7 +291,7 @@ async def loopsong(guild_id,songname,channelid):
   link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
   songname=songname.replace("%20"," ")
   getGuilds=f""" 
- 
+ await dashstop({guild_id}, {userid}, {channelid})
 """
   randomisedStr=genrandomstr(20)
   while randomisedStr in listOfAuth:
@@ -298,7 +302,7 @@ async def loopsong(guild_id,songname,channelid):
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/music"
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
@@ -316,10 +320,11 @@ async def stopsong(guild_id,songname,channelid):
   if theGuild==None:
     return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
   user=await discordo.fetch_user()
+  userid=user.id
   link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
   songname=songname.replace("%20"," ")
   getGuilds=f""" 
-
+await dashstop({guild_id}, {userid}, {channelid})
 """
   randomisedStr=genrandomstr(20)
   while randomisedStr in listOfAuth:
@@ -330,7 +335,7 @@ async def stopsong(guild_id,songname,channelid):
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/music"
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
@@ -367,10 +372,10 @@ async def changeprefix(guild_id,prefix):
     return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.manage_guild:
     return await render_template("error.html",errordata= "You do not have manage guild permissions to change prefixes in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  user=await discordo.fetch_user()
   link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
-  getGuilds=f""" 
-
-print(set_prefix({guild_id},'{prefix}'))
+  getGuilds=f"""
+await dashsetprefix({guild_id},{user.id},'{prefix}')
 """
   randomisedStr=genrandomstr(20)
   while randomisedStr in listOfAuth:
@@ -381,7 +386,7 @@ print(set_prefix({guild_id},'{prefix}'))
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)
   return redirect(url)
@@ -415,7 +420,7 @@ print(get_guilds())
   except Exception as ex:
     print(ex)
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
-  if dict_obj[randomisedStr]=="voithosStart":
+  if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   voithosguilds=list(eval(str(dict_obj[randomisedStr])))
   if not guild_id in voithosguilds:

@@ -1,30 +1,31 @@
 <!DOCTYPE html>
+<link rel="icon" href="https://cdn.discordapp.com/avatars/884635575032897537/bb0ea6e638e6af558b3570f6873c7985.png?size=64">
 <html>
   <head>
-    <title>Voithos helper</title>
-    <link rel="icon" href="https://cdn.discordapp.com/avatars/805030662183845919/70fee8581891e9a810da60944dc486ba.webp?size=128">
+    <title>Vithron</title>
+    <link rel="icon" href="https://cdn.discordapp.com/avatars/884635575032897537/89424d67ceb481fa6ad2613e3037ae43.png?size=128">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
   </head>
 <script language="javascript" type="text/javascript">
     function buttonClick(){
     var url = document.getElementById("inputURL").value;
     var channel = document.getElementById("inputChannel").value;
-    window.location = "https://voithos.webdashboard.repl.co/playsong/{{guild.id}}/"+url;
+    window.location = "https://voithos.webdashboard.repl.co/playsong/{{guild.id}}/"+url+"/"+channel;
     }
     function buttonClickOne(){
     var url = document.getElementById("inputURL").value;
     var channel = document.getElementById("inputChannel").value;
-    window.location = "https://voithos.webdashboard.repl.co/pausesong/{{guild.id}}/"+url;
+    window.location = "https://voithos.webdashboard.repl.co/pausesong/{{guild.id}}/"+url+"/"+channel;
     }
     function buttonClickTwo(){
     var url = document.getElementById("inputURL").value;
     var channel = document.getElementById("inputChannel").value;
-    window.location = "https://voithos.webdashboard.repl.co/loopsong/{{guild.id}}/"+url;
+    window.location = "https://voithos.webdashboard.repl.co/loopsong/{{guild.id}}/"+url+"/"+channel;
     }
     function buttonClickThree(){
     var url = document.getElementById("inputURL").value;
     var channel = document.getElementById("inputChannel").value;
-    window.location = "https://voithos.webdashboard.repl.co/stopsong/{{guild.id}}/"+url;
+    window.location = "https://voithos.webdashboard.repl.co/stopsong/{{guild.id}}/"+url+"/"+channel;
     }
 </script>
   <style>
@@ -87,9 +88,10 @@ li a:hover:not(.active) {
         <hr>
         <br>
         <br>
-        <label for="iprefix" style="font-family:'Courier New'">State a song : </label>
-        <input type="text" id="inputChannel" name="inputChannel" value="Channel id/Channel name"><br>
+        <label for="iprefix" style="font-family:'Courier New'">State the channel name/id: </label>
+        <input type="text" id="inputChannel" name="inputChannel" value=""><br>
         <br>
+        <label for="iprefix" style="font-family:'Courier New'">State a song : </label>
         <input type="text" id="inputURL" name="inputURL" value="Song name"><br>
         <br>
         <input type="button" value="▶️" OnClick="buttonClick()" style="font-family:'Courier New'"/>
