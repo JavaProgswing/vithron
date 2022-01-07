@@ -9,12 +9,12 @@
 <script language="javascript" type="text/javascript">
     function buttonClick(){
     var member = document.getElementById("inputURL").value;
-    let text;
+    let reason;
     let person = prompt("What's the mute reason?", "No reason");
     if (person == null || person == "") {
-      text = "No reason";
+      reason = "No reason";
     } else {
-      text = person;
+      reason = person;
     }
     let textOne;
     let timeprovided = prompt("What's the unmute time? (None for manual unmute)", "None");
@@ -23,7 +23,8 @@
     } else {
       textOne = timeprovided;
     }
-    window.location = "https://voithos.webdashboard.repl.co/mute/{{guild.id}}/"+member+"/"+reason+"?timenum="+textOne;
+    window.location="https://voithos.webdashboard.repl.co/mute/{{guild.id}}/"+member+"/"+reason+"?timenum="+textOne;
+    
     }
     function buttonClickOne(){
     var member = document.getElementById("inputURL").value;

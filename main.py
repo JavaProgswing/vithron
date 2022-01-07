@@ -40,7 +40,7 @@ token=os.environ.get("DISCORD_BOT_TOKEN")
 dashtoken=os.environ.get("DASH_SECRET")
 discordo = DiscordOAuth2Session(app)
 dict_obj = my_dictionary()
-
+hooksecret=os.environ.get("WEBHOOK_SECRET")
 HYPERLINK = '<a href="{}">{}</a>'
 listOfAuth=[]
 def genrandomstr(N):
@@ -48,7 +48,7 @@ def genrandomstr(N):
                               string.digits, k = N))
   return res
 async def sendwebhook(text,userprovided,hookurl=None):
-        hookurl="https://discord.com/api/webhooks/869804616529899561/FnxwbUPwZuYgjVZQk1OWEOyWHm1D_X1c4VN_dMY_y96o5YwM_rLanWyQWp9b7OGIpDcI"
+        hookurl=hooksecret
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(hookurl,
                                        adapter=AsyncWebhookAdapter(session))
@@ -87,15 +87,18 @@ async def index():
               print(" Request error : "+str(reqError))
               dict_obj[reqId]=reqError
             else:
+              reqOutput=str(reqOutput).replace("+"," ")
               print(" Request output : '"+str(reqOutput)+"'")
           else:
             reqError=request.args.get('requestErr')
-            reqError=str(reqError).replace("+"," ")
             for key, value in dict_obj.items():
               dict_obj[key]="vithronStart"
       
       return await render_template("index.html", authorized = await discordo.authorized)
-
+@app.route("/riot.txt")
+@rate_limit(1, timedelta(seconds=5))
+async def riot():
+  return await render_template("riot.txt")
 @app.route("/dashboard/<int:guild_id>/music")
 @rate_limit(1, timedelta(seconds=5))
 async def music(guild_id):
@@ -129,7 +132,308 @@ async def command(guild_id):
   if theGuild==None:
     return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
   return await render_template("commands.html",guild=theGuild)
-
+@app.route("/kick/<int:guild_id>/<string:member>/<string:reason>")
+@rate_limit(1, timedelta(seconds=2))
+async def kick(guild_id,member,reason):
+  theGuild=None
+  user_guilds = await discordo.fetch_guilds()
+  for guild in user_guilds:
+    if guild.id==guild_id:
+      theGuild=guild
+  if theGuild==None:
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+  if not theGuild.permissions.kick_members:
+    return await render_template("error.html",errordata= "You do not have kick member permissions to kick members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  author=await discordo.fetch_user()
+  authorid=author.id
+  link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
+  getGuilds=f""" 
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashkick(guild,author,memberobj,'{reason}')
+"""
+  randomisedStr=genrandomstr(20)
+  while randomisedStr in listOfAuth:
+    randomisedStr=genrandomstr(20)
+  listOfAuth.append(randomisedStr)
+  await sendwebhook(getGuilds,randomisedStr,link)
+  try:
+    await asyncio.wait_for(waitRequests(randomisedStr),60)
+  except Exception as ex:
+    print(ex)
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+  if dict_obj[randomisedStr]=="vithronStart":
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
+  if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
+    return redirect(url)
+  else:
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation",errordata=dict_obj[randomisedStr])
+@app.route("/ban/<int:guild_id>/<string:member>/<string:reason>")
+@rate_limit(1, timedelta(seconds=2))
+async def ban(guild_id,member,reason):
+  theGuild=None
+  user_guilds = await discordo.fetch_guilds()
+  for guild in user_guilds:
+    if guild.id==guild_id:
+      theGuild=guild
+  if theGuild==None:
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+  if not theGuild.permissions.ban_members:
+    return await render_template("error.html",errordata= "You do not have ban member permissions to ban members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  author=await discordo.fetch_user()
+  authorid=author.id
+  timenum=request.args.get('timenum')
+  link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
+  getGuilds=f""" 
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashban(guild,author,memberobj,'{reason}',{timenum})
+"""
+  randomisedStr=genrandomstr(20)
+  while randomisedStr in listOfAuth:
+    randomisedStr=genrandomstr(20)
+  listOfAuth.append(randomisedStr)
+  await sendwebhook(getGuilds,randomisedStr,link)
+  try:
+    await asyncio.wait_for(waitRequests(randomisedStr),60)
+  except Exception as ex:
+    print(ex)
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+  if dict_obj[randomisedStr]=="vithronStart":
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
+  if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
+    return redirect(url)
+  else:
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation",errordata=dict_obj[randomisedStr])
+@app.route("/unban/<int:guild_id>/<string:member>/<string:reason>")
+@rate_limit(1, timedelta(seconds=2))
+async def unban(guild_id,member,reason):
+  theGuild=None
+  user_guilds = await discordo.fetch_guilds()
+  for guild in user_guilds:
+    if guild.id==guild_id:
+      theGuild=guild
+  if theGuild==None:
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+  if not theGuild.permissions.ban_members:
+    return await render_template("error.html",errordata= "You do not have ban member permissions to unban members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  author=await discordo.fetch_user()
+  authorid=author.id
+  link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
+  getGuilds=f""" 
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashunban(guild,author,memberobj,'{reason}')
+"""
+  randomisedStr=genrandomstr(20)
+  while randomisedStr in listOfAuth:
+    randomisedStr=genrandomstr(20)
+  listOfAuth.append(randomisedStr)
+  await sendwebhook(getGuilds,randomisedStr,link)
+  try:
+    await asyncio.wait_for(waitRequests(randomisedStr),60)
+  except Exception as ex:
+    print(ex)
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+  if dict_obj[randomisedStr]=="vithronStart":
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
+  if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
+    return redirect(url)
+  else:
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation",errordata=dict_obj[randomisedStr])
+@app.route("/blacklist/<int:guild_id>/<string:member>/<string:reason>")
+@rate_limit(1, timedelta(seconds=2))
+async def blacklist(guild_id,member,reason):
+  theGuild=None
+  user_guilds = await discordo.fetch_guilds()
+  for guild in user_guilds:
+    if guild.id==guild_id:
+      theGuild=guild
+  if theGuild==None:
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+  if not theGuild.permissions.manage_roles:
+    return await render_template("error.html",errordata= "You do not have manage role permissions to blacklist members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  author=await discordo.fetch_user()
+  authorid=author.id
+  timenum=request.args.get('timenum')
+  link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
+  getGuilds=f""" 
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashblacklist(guild,author,memberobj,'{reason}','{timenum}')
+"""
+  randomisedStr=genrandomstr(20)
+  while randomisedStr in listOfAuth:
+    randomisedStr=genrandomstr(20)
+  listOfAuth.append(randomisedStr)
+  await sendwebhook(getGuilds,randomisedStr,link)
+  try:
+    await asyncio.wait_for(waitRequests(randomisedStr),60)
+  except Exception as ex:
+    print(ex)
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+  if dict_obj[randomisedStr]=="vithronStart":
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
+  if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
+    return redirect(url)
+  else:
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation",errordata=dict_obj[randomisedStr])
+@app.route("/unblacklist/<int:guild_id>/<string:member>/<string:reason>")
+@rate_limit(1, timedelta(seconds=2))
+async def unblacklist(guild_id,member,reason):
+  theGuild=None
+  user_guilds = await discordo.fetch_guilds()
+  for guild in user_guilds:
+    if guild.id==guild_id:
+      theGuild=guild
+  if theGuild==None:
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+  if not theGuild.permissions.manage_roles:
+    return await render_template("error.html",errordata= "You do not have manage role permissions to unblacklist members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  author=await discordo.fetch_user()
+  authorid=author.id
+  link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
+  getGuilds=f""" 
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashunblacklist(guild,author,memberobj,'{reason}')
+"""
+  randomisedStr=genrandomstr(20)
+  while randomisedStr in listOfAuth:
+    randomisedStr=genrandomstr(20)
+  listOfAuth.append(randomisedStr)
+  await sendwebhook(getGuilds,randomisedStr,link)
+  try:
+    await asyncio.wait_for(waitRequests(randomisedStr),60)
+  except Exception as ex:
+    print(ex)
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+  if dict_obj[randomisedStr]=="vithronStart":
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
+  if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
+    return redirect(url)
+  else:
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation",errordata=dict_obj[randomisedStr])
+@app.route("/unmute/<int:guild_id>/<string:member>/<string:reason>")
+@rate_limit(1, timedelta(seconds=2))
+async def unmute(guild_id,member,reason):
+  theGuild=None
+  user_guilds = await discordo.fetch_guilds()
+  for guild in user_guilds:
+    if guild.id==guild_id:
+      theGuild=guild
+  if theGuild==None:
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+  if not theGuild.permissions.manage_roles:
+    return await render_template("error.html",errordata= "You do not have manage role permissions to unmute members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+  author=await discordo.fetch_user()
+  authorid=author.id
+  link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
+  getGuilds=f""" 
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashunmute(guild,author,memberobj,'{reason}')
+"""
+  randomisedStr=genrandomstr(20)
+  while randomisedStr in listOfAuth:
+    randomisedStr=genrandomstr(20)
+  listOfAuth.append(randomisedStr)
+  await sendwebhook(getGuilds,randomisedStr,link)
+  try:
+    await asyncio.wait_for(waitRequests(randomisedStr),60)
+  except Exception as ex:
+    print(ex)
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+  if dict_obj[randomisedStr]=="vithronStart":
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
+  if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
+    return redirect(url)
+  else:
+    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation",errordata=dict_obj[randomisedStr])
 @app.route("/mute/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def mute(guild_id,member,reason):
@@ -143,11 +447,26 @@ async def mute(guild_id,member,reason):
   if not theGuild.permissions.manage_roles:
     return await render_template("error.html",errordata= "You do not have manage role permissions to mute members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
+  authorid=author.id
   timenum=request.args.get('timenum')
   link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
   getGuilds=f""" 
-raise commands.CommandError("This feature has not been implemented yet!")
-await mute_member({guild_id},'{member}','{author}','{timenum}','{reason}')
+member='{member}'
+if member.isdigit():
+  member=int(member)
+  guild=client.get_guild({guild_id})
+  memberobj=await guild.fetch_member(member)
+  if memberobj is None:
+    print(f"The member with id {member} was invalid.")
+    return
+else:
+  guild=client.get_guild({guild_id})
+  memberobj=discord.utils.get(guild.members, name=member)
+  if memberobj is None:
+    print(f"The member with name {member} was invalid.")
+    return
+author=await guild.fetch_member({authorid})
+await dashmute(guild,author,memberobj,'{reason}','{timenum}')
 """
   randomisedStr=genrandomstr(20)
   while randomisedStr in listOfAuth:
@@ -156,11 +475,11 @@ await mute_member({guild_id},'{member}','{author}','{timenum}','{reason}')
   await sendwebhook(getGuilds,randomisedStr,link)
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
-  except:
+  except Exception as ex:
+    print(ex)
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
     return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
-
   url="https://voithos.webdashboard.repl.co/dashboard/"+str(guild_id)+"/moderation"
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
     return redirect(url)
@@ -291,7 +610,7 @@ async def loopsong(guild_id,songname,channelid):
   link="https://discord.com/api/webhooks/865629070825750538/RuVdXxNapkUImOILx6O9gna_xhEWdLTUuHCcpAIxW7Z92VczLWnX53sa1JdNBKmK6Lp5"
   songname=songname.replace("%20"," ")
   getGuilds=f""" 
- await dashstop({guild_id}, {userid}, {channelid})
+ await dashloop({guild_id}, {userid}, {channelid},'{songname}')
 """
   randomisedStr=genrandomstr(20)
   while randomisedStr in listOfAuth:
@@ -425,7 +744,7 @@ print(get_guilds())
   voithosguilds=list(eval(str(dict_obj[randomisedStr])))
   if not guild_id in voithosguilds:
     if theGuild.permissions.manage_guild:
-      return (redirect(f"https://discord.com/api/oauth2/authorize?client_id=805030662183845919&permissions=2419453014&scope=bot&guild_id={guild_id}"))
+      return (redirect(f"https://discord.com/oauth2/authorize?client_id=884635575032897537&permissions=2416012310&scope=bot&guild_id={guild_id}"))
     else:
       return await render_template("error.html",errordata= "You do not have permissions to invite this bot to that guild.",url="https://voithos.webdashboard.repl.co/dashboard")
   return await render_template("guild.html",guild=theGuild)
