@@ -6,9 +6,11 @@
     <link rel="icon" href="https://cdn.discordapp.com/avatars/884635575032897537/89424d67ceb481fa6ad2613e3037ae43.png?size=128">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
   </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/2.1.0/bignumber.js"></script>
 <script language="javascript" type="text/javascript">
-    function buttonClick(){
-    var member = document.getElementById("inputURL").value;
+    var membername="",memberid=0,membernamelist,memberidlist;
+    function mute(){
+    var member = memberid;
     let reason;
     let person = prompt("What's the mute reason?", "No reason");
     if (person == null || person == "") {
@@ -26,31 +28,125 @@
     window.location="https://voithos.webdashboard.repl.co/mute/{{guild.id}}/"+member+"/"+reason+"?timenum="+textOne;
     
     }
-    function buttonClickOne(){
-    var member = document.getElementById("inputURL").value;
-
-    window.location = "https://voithos.webdashboard.repl.co/unmute/{{guild.id}}/"+member;
+    function unmute(){
+    var member = memberid;
+    let reason;
+    let person = prompt("What's the unmute reason?", "No reason");
+    if (person == null || person == "") {
+      reason = "No reason";
+    } else {
+      reason = person;
     }
-    function buttonClickTwo(){
-    var member = document.getElementById("inputURL").value;
-    window.location = "https://voithos.webdashboard.repl.co/blacklist/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/unmute/{{guild.id}}/"+member+"/"+reason;
     }
-    function buttonClickThree(){
-    var member = document.getElementById("inputURL").value;
-    window.location = "https://voithos.webdashboard.repl.co/unblacklist/{{guild.id}}/"+member;
+    function blacklist(){
+    var member = memberid;
+    let reason;
+    let person = prompt("What's the blacklist reason?", "No reason");
+    if (person == null || person == "") {
+      reason = "No reason";
+    } else {
+      reason = person;
     }
-    function buttonClickFour(){
-    var member = document.getElementById("inputURL").value;
-    window.location = "https://voithos.webdashboard.repl.co/ban/{{guild.id}}/"+member;
+    let textOne;
+    let timeprovided = prompt("What's the unblacklist time? (None for manual unblacklist)", "None");
+    if (timeprovided == null || timeprovided == "") {
+      textOne = "None";
+    } else {
+      textOne = timeprovided;
     }
-    function buttonClickFive(){
-    var member = document.getElementById("inputURL").value;
-    window.location = "https://voithos.webdashboard.repl.co/unban/{{guild.id}}/"+member;
+    window.location = "https://voithos.webdashboard.repl.co/blacklist/{{guild.id}}/"+member+"/"+reason+"?timenum="+textOne;
     }
-    function buttonClickSix(){
-    var member = document.getElementById("inputURL").value;
-    window.location = "https://voithos.webdashboard.repl.co/kick/{{guild.id}}/"+member;
+    function unblacklist(){
+    var member = memberid;
+    let reason;
+    let person = prompt("What's the unblacklist reason?", "No reason");
+    if (person == null || person == "") {
+      reason = "No reason";
+    } else {
+      reason = person;
     }
+    window.location = "https://voithos.webdashboard.repl.co/unblacklist//{{guild.id}}/"+member+"/"+reason;
+    }
+    function ban(){
+    var member = memberid;
+    let reason;
+    let person = prompt("What's the ban reason?", "No reason");
+    if (person == null || person == "") {
+      reason = "No reason";
+    } else {
+      reason = person;
+    }
+    window.location = "https://voithos.webdashboard.repl.co/ban/{{guild.id}}/"+member+"/"+reason;
+    }
+    function unban(){
+    var member = memberid;
+    let reason;
+    let person = prompt("What's the unban reason?", "No reason");
+    if (person == null || person == "") {
+      reason = "No reason";
+    } else {
+      reason = person;
+    }
+    window.location = "https://voithos.webdashboard.repl.co/unban/{{guild.id}}/"+member+"/"+reason;
+    }
+    function kick(){
+    var member = memberid;
+    let reason;
+    let person = prompt("What's the kick reason?", "No reason");
+    if (person == null || person == "") {
+      reason = "No reason";
+    } else {
+      reason = person;
+    }
+    window.location = "https://voithos.webdashboard.repl.co/kick/{{guild.id}}/"+member+"/"+reason;
+    }
+window.onload = function() {
+  setmemberdropdown();
+  memberselected(membernamelist[0]);
+};
+    String.prototype.replaceLast = function (what, replacement) {
+        var pcs = this.split(what);
+        var lastPc = pcs.pop();
+        return pcs.join(what) + replacement + lastPc;
+    };
+    String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+function setmemberdropdown(){
+  membernamelist='{{guildmembernames}}';
+  membernamelist=decodeURIComponent(escape(membernamelist));
+  membernamelist=membernamelist.replace("[","");
+  membernamelist=membernamelist.replaceLast("]","");
+  membernamelist=membernamelist.replace("b","");
+  membernamelist=membernamelist.replaceLast('&#39;', '');
+  membernamelist=membernamelist.replace("&#39;","");
+  membernamelist=membernamelist.split(',');
+  memberidlist='{{guildmemberids}}';
+  memberidlist=decodeURIComponent(escape(memberidlist));
+  memberidlist=memberidlist.replace("[","");
+  memberidlist=memberidlist.replaceLast("]","");
+  memberidlist=memberidlist.replace("b","");
+  memberidlist=memberidlist.replaceAll('&#39;', '');
+  memberidlist=memberidlist.split(',');
+  var catOptions = "";
+  var arrayLength = membernamelist.length;
+  for (var i = 0; i < arrayLength; i++) {
+      membernamelist[i]=membernamelist[i].replaceAll('&#39;', '');
+      membernamelist[i]=membernamelist[i].replaceAll('&#34;', '');
+      membernamelist[i]=membernamelist[i].trim();
+      catOptions += "<option>" + membernamelist[i] + "</option>";
+      memberidlist[i]=memberidlist[i].trim();
+      memberidlist[i]=new BigNumber(memberidlist[i]);
+  }
+  document.getElementById("category").innerHTML = catOptions;
+}
+function memberselected(nameparameter){
+membername=nameparameter;
+indexselected=membernamelist.indexOf(nameparameter);
+memberid=memberidlist[indexselected];
+}
 </script>
   <style>
     
@@ -101,10 +197,10 @@ li a:hover:not(.active) {
             {% if guild.icon_url is not none %}
             <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
             {% else %}
-            <img
-              src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
-              class="{{guild.class_color}}"
-            />
+              <img
+                src="https://media.discordapp.net/attachments/843081057506426880/927905908078563339/discord-metro-style-icon-0.png?width=499&height=499"
+                class="{{guild.class_color}}"
+              />
             {% endif %}
             </a>
           <br>
@@ -112,15 +208,16 @@ li a:hover:not(.active) {
         <hr>
         <br>
         <br>
-        <label for="iprefix" style="font-family:'Courier New'">State a member name or id : </label>
-        <input type="text" id="inputURL" name="inputURL" value="Punished member"><br>
+        <select name="category" id="category"  onChange="memberselected(this.value);">
+        <option value="" disabled selected>No members</option>
+        </select><br>
         <br>
-        <input type="button" value="Mute member" OnClick="buttonClick()" style="font-family:'Courier New'"/>
-        <input type="button" value="Unmute member" OnClick="buttonClickOne()" style="font-family:'Courier New'"/>
-        <input type="button" value="Blacklist member" OnClick="buttonClickTwo()" style="font-family:'Courier New'"/>
-        <input type="button" value="Unblacklist member" OnClick="buttonClickThree()" style="font-family:'Courier New'"/>
-        <input type="button" value="Ban member" OnClick="buttonClickFour()" style="font-family:'Courier New'"/>
-        <input type="button" value="Unban member" OnClick="buttonClickFive()" style="font-family:'Courier New'"/>
-        <input type="button" value="Kick member" OnClick="buttonClickSix()" style="font-family:'Courier New'"/>
+        <input type="button" value="Mute member" OnClick="mute()" style="font-family:'Courier New'"/>
+        <input type="button" value="Unmute member" OnClick="unmute()" style="font-family:'Courier New'"/>
+        <input type="button" value="Blacklist member" OnClick="blacklist()" style="font-family:'Courier New'"/>
+        <input type="button" value="Unblacklist member" OnClick="unblacklist()" style="font-family:'Courier New'"/>
+        <input type="button" value="Ban member" OnClick="ban()" style="font-family:'Courier New'"/>
+        <input type="button" value="Unban member" OnClick="unban()" style="font-family:'Courier New'"/>
+        <input type="button" value="Kick member" OnClick="kick()" style="font-family:'Courier New'"/>
   </body>
 </html>

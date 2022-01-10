@@ -10,8 +10,9 @@
     <meta content="#43B581" data-react-helmet="true" name="theme-color" />
     <link rel="icon" href="https://cdn.discordapp.com/avatars/884635575032897537/bb0ea6e638e6af558b3570f6873c7985.png?size=128">
     <link rel="stylesheet" type="text/css" href="static/index.css?version=2" />
+    
     <style>
-      button {
+      .buttonstyle {
         background-color: #4caf50; /* Green */
         border: none;
         color: white;
@@ -21,10 +22,6 @@
         display: inline-block;
         font-size: 16px;
         border-radius: 12px;
-      }
-      button:hover {
-        transform: scale(1.1);
-        cursor: pointer;
       }
       ul {
         list-style-type: none;
@@ -47,28 +44,77 @@
         text-decoration: none;
       }
 
-      li a:hover:not(.active) {
+      li a:hover:not(.g-recaptcha,.nobtn) {
         background-color: #111;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 12px;
       }
-
-      .active {
+      .nobtn{
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+      .g-recaptcha {
         background-color: #04AA6D;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 12px;
       }
     </style>
   </head>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LemXQIeAAAAAANzavTqNUi5Ho3j-OAID-GG9zrD">
+  </script>
+   <script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('6LemXQIeAAAAAANzavTqNUi5Ho3j-OAID-GG9zrD', {action: 'submit'}).then(function(localtoken) {
+          document.getElementById("captoken").value = localtoken;
+          });
+        });
+      }
+     function onSubmit(token) {
+        document.getElementById("demoform").submit();
+   }
+  </script>
   <body>
     <ul>
       {% if not authorized %}
-      <li><a class="active" href="/login">Login with discord</a></li>
+      <li><a class="g-recaptcha" href="/login"
+        data-sitekey="6LemXQIeAAAAAArvpmhkW_GOrdG75rn5FuuI-Vg7" 
+        data-callback='onSubmit' 
+        data-action='submit'>Login with discord</a></li>
       {% else %}
-      <li><a class="active" href="/dashboard">Open Dashboard</a></li>
-      <li><a href="/logout">Logout discord</a></li>
+      <li><a class="g-recaptcha" href="/dashboard" data-sitekey="6LemXQIeAAAAAArvpmhkW_GOrdG75rn5FuuI-Vg7" 
+        data-callback='onSubmit'
+        data-action='submit'>Open Dashboard</a></li>
+      <li><a class="nobtn" href="/logout">Logout discord</a></li>
       {%endif %}
     </ul>
     <br>
+  <form action="error.html" id="demoform" method="get">
+  <input type="hidden" name="captoken" id="captoken"/>
+  <input type="submit" value="Submit" type="hidden">
+  </form>
     <h2>
       <div class="card"><img src="https://cdn.discordapp.com/avatars/884635575032897537/89424d67ceb481fa6ad2613e3037ae43.png?size=128" alt="ICON" ></div>
-      <div class="blurcard">Why Vithron?</div></h2>
+      Why Vithron?</h2>
     <br>
     <div class="blurcard">
     <p align="center">

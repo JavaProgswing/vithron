@@ -6,28 +6,77 @@
     <link rel="icon" href="https://cdn.discordapp.com/avatars/884635575032897537/89424d67ceb481fa6ad2613e3037ae43.png?size=128">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
   </head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bignumber.js/2.1.0/bignumber.js"></script>
 <script language="javascript" type="text/javascript">
+var channelname="",channelid=0,channelnamelist,channelidlist;
     function buttonClick(){
     var url = document.getElementById("inputURL").value;
-    var channel = document.getElementById("inputChannel").value;
+    var channel = channelid;
     urlformed="https://voithos.webdashboard.repl.co/playsong/{{guild.id}}/"+url+"/"+channel;
     window.location = "https://voithos.webdashboard.repl.co/playsong/{{guild.id}}/"+url+"/"+channel;
     }
     function buttonClickOne(){
     var url = document.getElementById("inputURL").value;
-    var channel = document.getElementById("inputChannel").value;
+    var channel = channelid;
     window.location = "https://voithos.webdashboard.repl.co/pausesong/{{guild.id}}/"+url+"/"+channel;
     }
     function buttonClickTwo(){
     var url = document.getElementById("inputURL").value;
-    var channel = document.getElementById("inputChannel").value;
+    var channel = channelid;
     window.location = "https://voithos.webdashboard.repl.co/loopsong/{{guild.id}}/"+url+"/"+channel;
     }
     function buttonClickThree(){
     var url = document.getElementById("inputURL").value;
-    var channel = document.getElementById("inputChannel").value;
+    var channel = channelid;
     window.location = "https://voithos.webdashboard.repl.co/stopsong/{{guild.id}}/"+url+"/"+channel;
     }
+window.onload = function() {
+  document.getElementById("vcinfo").innerHTML="Your connected voice channel is {{vcinfo}}";
+  setchanneldropdown();
+  channelselected(channelnamelist[0]);
+};
+    String.prototype.replaceLast = function (what, replacement) {
+        var pcs = this.split(what);
+        var lastPc = pcs.pop();
+        return pcs.join(what) + replacement + lastPc;
+    };
+    String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.split(search).join(replacement);
+};
+function setchanneldropdown(){
+  channelnamelist='{{guildchannelnames}}';
+  channelnamelist=decodeURIComponent(escape(channelnamelist));
+  channelnamelist=channelnamelist.replace("[","");
+  channelnamelist=channelnamelist.replaceLast("]","");
+  channelnamelist=channelnamelist.replace("b","");
+  channelnamelist=channelnamelist.replaceLast('&#39;', '');
+  channelnamelist=channelnamelist.replace("&#39;","");
+  channelnamelist=channelnamelist.split(',');
+  channelidlist='{{guildchannelids}}';
+  channelidlist=decodeURIComponent(escape(channelidlist));
+  channelidlist=channelidlist.replace("[","");
+  channelidlist=channelidlist.replaceLast("]","");
+  channelidlist=channelidlist.replace("b","");
+  channelidlist=channelidlist.replaceAll('&#39;', '');
+  channelidlist=channelidlist.split(',');
+  var catOptions = "";
+  var arrayLength = channelnamelist.length;
+  for (var i = 0; i < arrayLength; i++) {
+      channelnamelist[i]=channelnamelist[i].replaceAll('&#39;', '');
+      channelnamelist[i]=channelnamelist[i].replaceAll('&#34;', '');
+      channelnamelist[i]=channelnamelist[i].trim();
+      catOptions += "<option>" + channelnamelist[i] + "</option>";
+      channelidlist[i]=channelidlist[i].trim();
+      channelidlist[i]=new BigNumber(channelidlist[i]);
+  }
+  document.getElementById("category").innerHTML = catOptions;
+}
+function channelselected(nameparameter){
+channelname=nameparameter;
+indexselected=channelnamelist.indexOf(nameparameter);
+channelid=channelidlist[indexselected];
+}
 </script>
   <style>
     
@@ -78,10 +127,10 @@ li a:hover:not(.active) {
             {% if guild.icon_url is not none %}
             <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
             {% else %}
-            <img
-              src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
-              class="{{guild.class_color}}"
-            />
+              <img
+                src="https://media.discordapp.net/attachments/843081057506426880/927905908078563339/discord-metro-style-icon-0.png?width=499&height=499"
+                class="{{guild.class_color}}"
+              />
             {% endif %}
             </a>
           <br>
@@ -89,9 +138,12 @@ li a:hover:not(.active) {
         <hr>
         <br>
         <br>
-        <label for="iprefix" style="font-family:'Courier New'">State the channel name/id(Text-Channel): </label>
-        <input type="text" id="inputChannel" name="inputChannel" value=""><br>
+        <select name="category" id="category"  onChange="channelselected(this.value);">
+        <option value="" disabled selected>No Text Channels</option>
+        </select><br>
         <br>
+        <label id="vcinfo" style="font-family:'Courier New'">Your connected voice channel is </label>
+        <br><br>
         <label for="iprefix" style="font-family:'Courier New'">State a song : </label>
         <input type="text" id="inputURL" name="inputURL" value="Song name"><br>
         <br>

@@ -4,7 +4,7 @@
   <head>
     <title>Vithron</title>
     <link rel="icon" href="https://cdn.discordapp.com/avatars/884635575032897537/89424d67ceb481fa6ad2613e3037ae43.png?size=128">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='index.css') }}" />
   </head>
   <style>
 ul {
@@ -53,10 +53,10 @@ li a:hover:not(.active) {
             {% if guild.icon_url is not none %}
             <img src="{{guild.icon_url}}" class="{{guild.class_color}}" />
             {% else %}
-            <img
-              src="https://discordapp.com/assets/322c936a8c8be1b803cd94861bdfa868.png"
-              class="{{guild.class_color}}"
-            />
+              <img
+                src="https://media.discordapp.net/attachments/843081057506426880/927905908078563339/discord-metro-style-icon-0.png?width=499&height=499"
+                class="{{guild.class_color}}"
+              />
             {% endif %}
             </a>
           <br>
@@ -66,6 +66,5 @@ li a:hover:not(.active) {
   <li><a href="/dashboard/{{guild.id}}/commands">Commands</a></li>
   <li><a href="/info">About</a></li>
   </ul>
-
-  </body>
+</body>
 </html>
