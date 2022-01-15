@@ -52,7 +52,7 @@ async def sendwebhook(text,userprovided):
             webhook = Webhook.from_url(hooksecret,
                                        adapter=AsyncWebhookAdapter(session))
             await webhook.send(text,
-                               username=userprovided)
+                               username=f"vo-{userprovided}")
 
 @app.errorhandler(429)
 async def rate_limit_exceeded(e):
@@ -758,9 +758,6 @@ async def user_guilds():
     if guild.permissions.manage_guild:
       if not guild.id==811864132470571038:			
         guild.class_color = "green-border"
-        print(dir(guild))
-        guildnew=await guild.fetch_from_api()
-        print(dir(guildnew))
       else:
         guild.class_color = "golden-border"
     else:
