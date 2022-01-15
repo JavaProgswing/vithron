@@ -78,13 +78,13 @@
       }
     </style>
   </head>
-  <script src="https://www.google.com/recaptcha/api.js?render=6LemXQIeAAAAAANzavTqNUi5Ho3j-OAID-GG9zrD">
+  <script src="https://www.google.com/recaptcha/api.js?render=6LdElgMeAAAAAKEyJ2Uh323i48WWlCIN3H_njA1X">
   </script>
    <script>
       function onClick(e) {
         e.preventDefault();
         grecaptcha.ready(function() {
-          grecaptcha.execute('6LemXQIeAAAAAANzavTqNUi5Ho3j-OAID-GG9zrD', {action: 'submit'}).then(function(localtoken) {
+          grecaptcha.execute('6LdElgMeAAAAAKEyJ2Uh323i48WWlCIN3H_njA1X', {action: 'submit'}).then(function(localtoken) {
           document.getElementById("captoken").value = localtoken;
           });
         });
@@ -97,11 +97,11 @@
     <ul>
       {% if not authorized %}
       <li><a class="g-recaptcha" href="/login"
-        data-sitekey="6LemXQIeAAAAAArvpmhkW_GOrdG75rn5FuuI-Vg7" 
+        data-sitekey="6LdElgMeAAAAALRaPynnVfzmjDMJnrNk6IxfO5z3" 
         data-callback='onSubmit' 
         data-action='submit'>Login with discord</a></li>
       {% else %}
-      <li><a class="g-recaptcha" href="/dashboard" data-sitekey="6LemXQIeAAAAAArvpmhkW_GOrdG75rn5FuuI-Vg7" 
+      <li><a class="g-recaptcha" href="/dashboard" data-sitekey="6LdElgMeAAAAALRaPynnVfzmjDMJnrNk6IxfO5z3" 
         data-callback='onSubmit'
         data-action='submit'>Open Dashboard</a></li>
       <li><a class="nobtn" href="/logout">Logout discord</a></li>

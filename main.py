@@ -35,7 +35,7 @@ class my_dictionary(dict):
 app.config["DISCORD_CLIENT_ID"] = 884635575032897537
 app.config["DISCORD_CLIENT_SECRET"] = os.getenv("DISCORD_CLIENT_SECRET")
 app.config["DISCORD_BOT_TOKEN"] = os.getenv("DISCORD_BOT_TOKEN")
-app.config["DISCORD_REDIRECT_URI"] = "https://voithos.webdashboard.repl.co/callback"
+app.config["DISCORD_REDIRECT_URI"] = "https://vithron.webdashboard.repl.co/callback"
 token=os.environ.get("DISCORD_BOT_TOKEN")
 dashtoken=os.environ.get("DASH_SECRET")
 discordo = DiscordOAuth2Session(app)
@@ -52,20 +52,20 @@ async def sendwebhook(text,userprovided):
             webhook = Webhook.from_url(hooksecret,
                                        adapter=AsyncWebhookAdapter(session))
             await webhook.send(text,
-                               username=userprovided)
+                               username=f"vi-{userprovided}")
 
 @app.errorhandler(429)
 async def rate_limit_exceeded(e):
-    return await render_template("429.html",errordata= "You exceeded an allotted request count. Try again later.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("429.html",errordata= "You exceeded an allotted request count. Try again later.",url="https://vithron.webdashboard.repl.co/dashboard")
 @app.errorhandler(404)
 async def page_not_found(e):
-    return await render_template("404.html",errordata= "Sorry but the page you are looking for has been removed or is temporarily unavailable.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("404.html",errordata= "Sorry but the page you are looking for has been removed or is temporarily unavailable.",url="https://vithron.webdashboard.repl.co/dashboard")
 @app.errorhandler(500)
 async def internal_server_error(e):
-    return await render_template("500.html",errordata= "Oops the page you were accessing has encountered an unexpected error. Try refreshing the page.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("500.html",errordata= "Oops the page you were accessing has encountered an unexpected error. Try refreshing the page.",url="https://vithron.webdashboard.repl.co/dashboard")
 @app.errorhandler(403)
 async def page_forbidden(e):
-    return await render_template("403.html",errordata= "Seems like the page you were missing access to the page you were looking for.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("403.html",errordata= "Seems like the page you were missing access to the page you were looking for.",url="https://vithron.webdashboard.repl.co/dashboard")
 @app.errorhandler(Unauthorized)
 async def redirect_unauthorized(e):
     return redirect(url_for("login"))
@@ -114,7 +114,7 @@ async def music(guild_id):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   author=await discordo.fetch_user()
   getGuilds=f""" 
 print(dashgetchannelsname({theGuild.id},{author.id}))
@@ -128,12 +128,12 @@ print(dashgetchannelsname({theGuild.id},{author.id}))
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard")
   theGuildChannelnames=str(dict_obj[randomisedStr])
   getGuilds=f""" 
 print(dashgetchannelsid({theGuild.id},{author.id}))
@@ -147,12 +147,12 @@ print(dashgetchannelsid({theGuild.id},{author.id}))
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard")
   theGuildChannelids=str(dict_obj[randomisedStr])
   getGuilds=f""" 
 print(dashgetvcname({theGuild.id},{author.id}))
@@ -166,9 +166,9 @@ print(dashgetvcname({theGuild.id},{author.id}))
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   theGuildMembervc=str(dict_obj[randomisedStr])
   return await render_template("music.html",guild=theGuild,guildchannelids=theGuildChannelids,guildchannelnames=theGuildChannelnames,vcinfo=theGuildMembervc)
 @app.route("/dashboard/<int:guild_id>/moderation")
@@ -179,7 +179,7 @@ async def moderation(guild_id):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   getGuilds=f""" 
 print(dashgetmembersname({theGuild.id}))
 """
@@ -192,12 +192,12 @@ print(dashgetmembersname({theGuild.id}))
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard")
   theGuildMembernames=str(dict_obj[randomisedStr])
   getGuilds=f""" 
 print(dashgetmembersid({theGuild.id}))
@@ -211,12 +211,12 @@ print(dashgetmembersid({theGuild.id}))
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard")
   theGuildMemberids=str(dict_obj[randomisedStr])
   return await render_template("moderation.html",guild=theGuild,guildmemberids=theGuildMemberids,guildmembernames=theGuildMembernames)
 @app.route("/dashboard/<int:guild_id>/commands")
@@ -228,7 +228,7 @@ async def command(guild_id):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   return await render_template("commands.html",guild=theGuild)
 @app.route("/kick/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
@@ -239,9 +239,9 @@ async def kick(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.kick_members:
-    return await render_template("error.html",errordata= "You do not have kick member permissions to kick members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have kick member permissions to kick members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   
@@ -272,13 +272,13 @@ await dashkick(guild,author,memberobj,'{reason}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 @app.route("/ban/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def ban(guild_id,member,reason):
@@ -288,9 +288,9 @@ async def ban(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.ban_members:
-    return await render_template("error.html",errordata= "You do not have ban member permissions to ban members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have ban member permissions to ban members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   timenum=request.args.get('timenum')
@@ -322,13 +322,13 @@ await dashban(guild,author,memberobj,'{reason}',{timenum})
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 @app.route("/unban/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def unban(guild_id,member,reason):
@@ -338,9 +338,9 @@ async def unban(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.ban_members:
-    return await render_template("error.html",errordata= "You do not have ban member permissions to unban members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have ban member permissions to unban members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   
@@ -371,13 +371,13 @@ await dashunban(guild,author,memberobj,'{reason}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 @app.route("/blacklist/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def blacklist(guild_id,member,reason):
@@ -387,9 +387,9 @@ async def blacklist(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.manage_roles:
-    return await render_template("error.html",errordata= "You do not have manage role permissions to blacklist members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have manage role permissions to blacklist members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   timenum=request.args.get('timenum')
@@ -421,13 +421,13 @@ await dashblacklist(guild,author,memberobj,'{reason}','{timenum}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 @app.route("/unblacklist/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def unblacklist(guild_id,member,reason):
@@ -437,9 +437,9 @@ async def unblacklist(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.manage_roles:
-    return await render_template("error.html",errordata= "You do not have manage role permissions to unblacklist members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have manage role permissions to unblacklist members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   
@@ -470,13 +470,13 @@ await dashunblacklist(guild,author,memberobj,'{reason}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 @app.route("/unmute/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def unmute(guild_id,member,reason):
@@ -486,9 +486,9 @@ async def unmute(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.manage_roles:
-    return await render_template("error.html",errordata= "You do not have manage role permissions to unmute members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have manage role permissions to unmute members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   
@@ -519,13 +519,13 @@ await dashunmute(guild,author,memberobj,'{reason}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 @app.route("/mute/<int:guild_id>/<string:member>/<string:reason>")
 @rate_limit(1, timedelta(seconds=2))
 async def mute(guild_id,member,reason):
@@ -535,9 +535,9 @@ async def mute(guild_id,member,reason):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.manage_roles:
-    return await render_template("error.html",errordata= "You do not have manage role permissions to mute members in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have manage role permissions to mute members in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   author=await discordo.fetch_user()
   authorid=author.id
   timenum=request.args.get('timenum')
@@ -569,13 +569,13 @@ await dashmute(guild,author,memberobj,'{reason}','{timenum}')
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/moderation")
 
 @app.route("/dashboard/<int:guild_id>/prefixes")
 @rate_limit(1, timedelta(seconds=5))
@@ -586,7 +586,7 @@ async def prefix(guild_id):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   
   getGuilds=f""" 
 prefix = await get_guild_prefixid({theGuild.id})
@@ -600,9 +600,9 @@ print(prefix)
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   return await render_template("prefixes.html",guild=theGuild,prefix=str(dict_obj[randomisedStr]))
 @app.route("/login")
 async def login():
@@ -613,14 +613,15 @@ async def callback():
     errorOcc=request.args.get('error_description')
     if not errorOcc==None:
       errorOcc=errorOcc.replace('+',' ')
-      return await render_template("error.html",errordata=errorOcc+".",url="https://voithos.webdashboard.repl.co/")
+      return await render_template("error.html",errordata=errorOcc+".",url="https://vithron.webdashboard.repl.co/")
     try:
       data = await discordo.callback()
       redirect_to = data.get("redirect", "/")
     except Exception as ex:
-      print(f" An unknown error occured : {ex} ")
-      return await render_template("error.html",errordata=" An unknown error occured ",url="https://voithos.webdashboard.repl.co/")
+      print(f" An unknown error occured : {type(ex)}{ex} ")
+      return await render_template("error.html",errordata=" An unknown error occured ",url="https://vithron.webdashboard.repl.co/")
     return redirect(redirect_to)
+
 @app.route("/playsong/<int:guild_id>/<string:songname>/<string:channelid>")
 @rate_limit(1, timedelta(seconds=30))
 async def playsong(guild_id,songname,channelid):
@@ -630,7 +631,7 @@ async def playsong(guild_id,songname,channelid):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   user=await discordo.fetch_user()
   
   songname=songname.replace("%20"," ")
@@ -645,13 +646,13 @@ async def playsong(guild_id,songname,channelid):
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
 @app.route("/pausesong/<int:guild_id>/<string:songname>/<string:channelid>")
 @rate_limit(1, timedelta(seconds=2))
 async def pausesong(guild_id,songname,channelid):
@@ -661,7 +662,7 @@ async def pausesong(guild_id,songname,channelid):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   user=await discordo.fetch_user()
   
   songname=songname.replace("%20"," ")
@@ -677,13 +678,13 @@ async def pausesong(guild_id,songname,channelid):
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
 @app.route("/loopsong/<int:guild_id>/<string:songname>/<string:channelid>")
 @rate_limit(1, timedelta(seconds=4))
 async def loopsong(guild_id,songname,channelid):
@@ -693,7 +694,7 @@ async def loopsong(guild_id,songname,channelid):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   user=await discordo.fetch_user()
   userid=user.id
   
@@ -709,13 +710,13 @@ async def loopsong(guild_id,songname,channelid):
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
 
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
 @app.route("/stopsong/<int:guild_id>/<string:songname><string:channelid>")
 @rate_limit(1, timedelta(seconds=2))
 async def stopsong(guild_id,songname,channelid):
@@ -725,7 +726,7 @@ async def stopsong(guild_id,songname,channelid):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata="This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   user=await discordo.fetch_user()
   userid=user.id
   
@@ -741,13 +742,13 @@ await dashstop({guild_id}, {userid}, {channelid})
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   
   if dict_obj[randomisedStr]==None or dict_obj[randomisedStr]=="None" or dict_obj[randomisedStr]=="":
-    return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}/music")
+    return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}/music")
 @app.route("/dashboard")
 async def user_guilds():
   global listOfAuth
@@ -758,9 +759,6 @@ async def user_guilds():
     if guild.permissions.manage_guild:
       if not guild.id==811864132470571038:			
         guild.class_color = "green-border"
-        print(dir(guild))
-        guildnew=await guild.fetch_from_api()
-        print(dir(guildnew))
       else:
         guild.class_color = "golden-border"
     else:
@@ -780,9 +778,9 @@ async def changeprefix(guild_id,prefix):
     if guild.id==guild_id:
       theGuild=guild
   if theGuild==None:
-    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "This guild is not in your guild list.",url="https://vithron.webdashboard.repl.co/dashboard")
   if not theGuild.permissions.manage_guild:
-    return await render_template("error.html",errordata= "You do not have manage guild permissions to change prefixes in this guild.",url=f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",errordata= "You do not have manage guild permissions to change prefixes in this guild.",url=f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
   user=await discordo.fetch_user()
   
   getGuilds=f"""
@@ -796,10 +794,10 @@ await dashsetprefix({guild_id},{user.id},'{prefix}')
   try:
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except:
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
-  return redirect(f"https://voithos.webdashboard.repl.co/dashboard/{guild_id}")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+  return redirect(f"https://vithron.webdashboard.repl.co/dashboard/{guild_id}")
 
 @app.route("/dashboard/<int:guild_id>")
 @rate_limit(1, timedelta(seconds=1))
@@ -811,7 +809,7 @@ async def dashboard_server(guild_id):
   for guild in user_guilds:
     user_guildids.append(guild.id)
   if not guild_id in user_guildids:
-    return await render_template("error.html",errordata= "You do not have permissions to access this guild.",url="https://voithos.webdashboard.repl.co/dashboard")
+    return await render_template("error.html",errordata= "You do not have permissions to access this guild.",url="https://vithron.webdashboard.repl.co/dashboard")
   theGuild=None
   for g in user_guilds:
     if g.id==guild_id:
@@ -829,15 +827,15 @@ print(get_guilds())
     await asyncio.wait_for(waitRequests(randomisedStr),60)
   except Exception as ex:
     print(ex)
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata=timeoutmessage)
   if dict_obj[randomisedStr]=="vithronStart":
-    return await render_template("error.html",url=f"https://voithos.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
+    return await render_template("error.html",url=f"https://vithron.webdashboard.repl.co/dashboard",errordata="Bot was offline while requesting data , kindly reload the page.")
   voithosguilds=list(eval(str(dict_obj[randomisedStr])))
   if not guild_id in voithosguilds:
     if theGuild.permissions.manage_guild:
       return (redirect(f"https://discord.com/oauth2/authorize?client_id=884635575032897537&permissions=2416012310&scope=bot&guild_id={guild_id}"))
     else:
-      return await render_template("error.html",errordata= "You do not have permissions to invite this bot to that guild.",url="https://voithos.webdashboard.repl.co/dashboard")
+      return await render_template("error.html",errordata= "You do not have permissions to invite this bot to that guild.",url="https://vithron.webdashboard.repl.co/dashboard")
   return await render_template("guild.html",guild=theGuild)
 
 @app.route("/logout/")
